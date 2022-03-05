@@ -1,0 +1,9 @@
+# dotfiles
+.DS_Store
+.env
+
+# modules
+node_modules
+
+#directories
+./src/dist
