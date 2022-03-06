@@ -10,16 +10,6 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/app/useNaturalLanguage.ts":
-/*!***************************************!*\
-  !*** ./src/app/useNaturalLanguage.ts ***!
-  \***************************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexports.useNaturalLanguage = void 0;\nconst useNaturalLanguage = () => {\n    return \"Hello~~~~~\";\n};\nexports.useNaturalLanguage = useNaturalLanguage;\n\n\n//# sourceURL=webpack://self-work-api/./src/app/useNaturalLanguage.ts?");
-
-/***/ }),
-
 /***/ "./src/config/app.config.ts":
 /*!**********************************!*\
   !*** ./src/config/app.config.ts ***!
@@ -46,7 +36,7 @@ eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexpo
   \*******************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexports.musicAdjustEmotion = void 0;\nconst useNaturalLanguage_1 = __webpack_require__(/*! ../app/useNaturalLanguage */ \"./src/app/useNaturalLanguage.ts\");\nconst musicAdjustEmotion = () => {\n    const text = (0, useNaturalLanguage_1.useNaturalLanguage)();\n    console.log(text);\n    return text;\n};\nexports.musicAdjustEmotion = musicAdjustEmotion;\n\n\n//# sourceURL=webpack://self-work-api/./src/feature/musicAdjustEmotion.ts?");
+eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexports.musicAdjustEmotion = void 0;\nconst useNaturalLanguage_1 = __webpack_require__(/*! ../app/useNaturalLanguage */ \"./src/app/useNaturalLanguage.js\");\nconst musicAdjustEmotion = (req, res) => {\n    const query = req.query;\n    if (typeof req.query.text !== \"string\") {\n        throw new Error(\"Parameter date must be string\");\n    }\n    else {\n        (0, useNaturalLanguage_1.useNaturalLanguage)(query.text).then((data) => {\n            res.json(data);\n        });\n    }\n};\nexports.musicAdjustEmotion = musicAdjustEmotion;\n\n\n//# sourceURL=webpack://self-work-api/./src/feature/musicAdjustEmotion.ts?");
 
 /***/ }),
 
@@ -56,7 +46,27 @@ eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexpo
   \**********************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst express_1 = __importDefault(__webpack_require__(/*! express */ \"express\"));\nconst app_config_1 = __webpack_require__(/*! ./config/app.config */ \"./src/config/app.config.ts\");\nconst feature_1 = __webpack_require__(/*! ./feature */ \"./src/feature/index.ts\");\nconst app = (0, express_1.default)();\nconst port = app_config_1.PORT_NUMBER || 8080;\nconst handleListenServer = () => {\n    console.log(`server listening on port ${port}`);\n};\napp.listen(port, handleListenServer);\napp.get(\"/feelingMusic/\", feature_1.emotionalMusic);\n\n\n//# sourceURL=webpack://self-work-api/./src/index.ts?");
+eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst express_1 = __importDefault(__webpack_require__(/*! express */ \"express\"));\nconst app_config_1 = __webpack_require__(/*! ./config/app.config */ \"./src/config/app.config.ts\");\nconst feature_1 = __webpack_require__(/*! ./feature */ \"./src/feature/index.ts\");\nconst app = (0, express_1.default)();\nconst port = app_config_1.PORT_NUMBER || 8080;\nconst handleListenServer = () => {\n    console.log(`server listening on port ${port}`);\n};\napp.use((req, res, next) => {\n    res.header(\"Access-Control-Allow-Origin\", \"*\");\n    res.header(\"Access-Control-Allow-Headers\", \"Origin, X-Requested-With, Content-Type, Accept\");\n    next();\n});\napp.listen(port, handleListenServer);\napp.get(\"/emotionalMusic/\", (req, res) => (0, feature_1.emotionalMusic)(req, res));\n\n\n//# sourceURL=webpack://self-work-api/./src/index.ts?");
+
+/***/ }),
+
+/***/ "./src/app/useNaturalLanguage.js":
+/*!***************************************!*\
+  !*** ./src/app/useNaturalLanguage.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"useNaturalLanguage\": () => (/* binding */ useNaturalLanguage)\n/* harmony export */ });\n/* harmony import */ var _google_cloud_language__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @google-cloud/language */ \"@google-cloud/language\");\n/* harmony import */ var _google_cloud_language__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_google_cloud_language__WEBPACK_IMPORTED_MODULE_0__);\n\n\nconst useNaturalLanguage = async (text) => {\n  const client = new (_google_cloud_language__WEBPACK_IMPORTED_MODULE_0___default().LanguageServiceClient)();\n  const document = {\n    content: text,\n    type: \"PLAIN_TEXT\",\n  };\n  const [result] = await client.analyzeSentiment({ document });\n  return result;\n};\n\n\n//# sourceURL=webpack://self-work-api/./src/app/useNaturalLanguage.js?");
+
+/***/ }),
+
+/***/ "@google-cloud/language":
+/*!*****************************************!*\
+  !*** external "@google-cloud/language" ***!
+  \*****************************************/
+/***/ ((module) => {
+
+module.exports = require("@google-cloud/language");
 
 /***/ }),
 
@@ -105,6 +115,47 @@ module.exports = require("express");
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
 /******/ 	
 /************************************************************************/
 /******/ 	
