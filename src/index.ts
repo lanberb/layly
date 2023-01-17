@@ -1,6 +1,6 @@
 import express from "express";
 import { PORT_NUMBER } from "./config/app.config";
-import { emotionalMusic } from "./feature";
+import { FeatEmotionalMusic } from "./feature";
 
 const app = express();
 const port: number = PORT_NUMBER || 8080;
@@ -17,6 +17,8 @@ app.use((req, res, next) => {
   next();
 });
 app.listen(port, handleListenServer);
-app.get("/emotionalMusic/", (req: express.Request, res: express.Response) =>
-  emotionalMusic(req, res)
-);
+app.get("/emotionalMusic/", (req: express.Request, res: express.Response) => {
+  FeatEmotionalMusic(req).then((data) => {
+    res.send(data);
+  });
+});

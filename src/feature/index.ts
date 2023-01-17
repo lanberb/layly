@@ -1,3 +1,3 @@
 import { musicAdjustEmotion } from "./musicAdjustEmotion";
 
-export { musicAdjustEmotion as emotionalMusic };
+export { musicAdjustEmotion as FeatEmotionalMusic };
